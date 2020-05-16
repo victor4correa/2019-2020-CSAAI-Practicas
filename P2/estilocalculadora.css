@@ -1,0 +1,20 @@
+
+/*Estilo calculadora*/
+body{
+  margin: 10px;
+  padding: 40px;
+  border: solid;
+}
+p{
+  margin: 5px;
+  padding:25px;
+  border:solid;
+  border-color: lightblue;
+}
+button{
+  margin: 2px;
+  padding:25px;
+  border:solid;
+  border-color: blue;
+  background-color: lightblue;
+}

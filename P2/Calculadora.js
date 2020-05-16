@@ -1,7 +1,6 @@
 console.log("Ejecutando JS...");
 
 display = document.getElementById("display")
-suma = document.getElementById("suma")
 igual = document.getElementById("igual")
 clear = document.getElementById("clear")
 
@@ -18,8 +17,11 @@ var estado = ESTADO.INIT;
 function number(num)
 {
   //-- Segun el estado hacemos una cosa u otra
-  if (estado == ESTADO.INIT || estado == ESTADO.OP1 ) {
+  if (estado == ESTADO.INIT){
     display.innerHTML = num;
+    estado = ESTADO.OP1;
+  }else if (estado == ESTADO.OP1 ){
+    display.innerHTML += num;
     estado = ESTADO.OP1;
   }else if (estado == ESTADO.OPERATION){
     display.innerHTML += num;
@@ -37,10 +39,10 @@ function operador (op){
     estado = ESTADO.OPERATION;
   }else if(estado == ESTADO.OP2_INIT){
     display.innerHTML += op;
-    estado = ESTADO.OP1;
+    estado = ESTADO.OP2;
   }else if (estado == ESTADO.OP2){
     display.innerHTML += op;
-    estado = ESTADO.OP1;
+    estado = ESTADO.OP2;
   }
 }
 
@@ -61,9 +63,12 @@ for (i=0; i<digito.length; i++) {
   }
 }
 
-//-- Insertar simbolo de sumar
-suma.onclick = (ev) => {
-  operador(ev.target.value);
+op = document.getElementsByClassName("operador")
+//-- Insertar simbolo de operador
+for (i=0; i<operador.length; i++) {
+  op[i].onclick = (ev) => {
+    operador(ev.target.value)
+  }
 }
 
 //-- Evaluar la expresion
@@ -74,4 +79,5 @@ igual.onclick = () => {
 //-- Poner a cero la expresion
 clear.onclick = () => {
   display.innerHTML = "0";
+  estado = ESTADO.INIT
 }
