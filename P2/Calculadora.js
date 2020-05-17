@@ -65,7 +65,7 @@ for (i=0; i<digito.length; i++) {
 
 op = document.getElementsByClassName("operador")
 //-- Insertar simbolo de operador
-for (i=0; i<operador.length; i++) {
+for (i=0; i<op.length; i++) {
   op[i].onclick = (ev) => {
     operador(ev.target.value)
   }
