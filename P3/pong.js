@@ -2,7 +2,10 @@ console.log("Ejecutando JS...");
 
 //-- Obtener el objeto canvas
 const canvas = document.getElementById("canvas");
-
+//-- Obtener Sonidos
+const sonido_raqueta = new Audio("pong-raqueta.mp3");
+const sonido_rebote = new Audio("pong-rebote.mp3");
+const sonido_tanto = new Audio("pong-tanto.mp3")
 //-- Sus dimensiones las hemos fijado en el fichero
 //-- HTML. Las imprimimos en la consola
 console.log(`canvas: Anchura: ${canvas.width}, Altura: ${canvas.height}`);
@@ -65,6 +68,8 @@ function animacion()
     bola.vx = 0;
     bola.vy = 0;
     pointP1 += 1;
+    sonido_tanto.currentTime = 0;
+    sonido_tanto.play();
   }else if (bola.x <= 0){
     //-- Hay colisión. Cambiar el signo de la bola
     bola.x_ini = raqI.x+11;
@@ -73,8 +78,12 @@ function animacion()
     bola.vy = 0;
     bola.init();
     pointP2 += 1;
+    sonido_tanto.currentTime = 0;
+    sonido_tanto.play();
   }else if(bola.y >= canvas.height || bola.y <=0){
     bola.vy = bola.vy * -1;
+    sonido_rebote.currentTime = 0;
+    sonido_rebote.play();
   }
 
 
@@ -83,10 +92,14 @@ function animacion()
       bola.y >= raqI.y && bola.y <=(raqI.y + raqI.height)) {
     bola.vx = bola.vx * -1;
     bola.vy = raqI.v;
+    sonido_raqueta.currentTime = 0;
+    sonido_raqueta.play();
   }else if (bola.x >= raqD.x && bola.x <=(raqD.x + raqD.width) &&
   bola.y >= raqD.y && bola.y <=(raqD.y + raqD.height)){
     bola.vx = bola.vx * -1;
     bola.vy = raqD.v;
+    sonido_raqueta.currentTime = 0;
+    sonido_raqueta.play();
   }
 
   //-- Actualizar coordenada x de la bola, en funcion de
