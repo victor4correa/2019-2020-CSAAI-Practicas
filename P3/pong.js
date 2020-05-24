@@ -14,11 +14,32 @@ console.log(`canvas: Anchura: ${canvas.width}, Altura: ${canvas.height}`);
 const ctx = canvas.getContext("2d");
 var pointP1 = 0;
 var pointP2 = 0;
+
+//-- Estados del juego
+const ESTADO = {
+  INIT: 0,
+  SAQUE: 1,
+  JUGANDO: 2,
+}
+
+//-- Variable de estado
+//-- Arrancamos desde el estado inicial
+let estado = ESTADO.INIT;
+
 //-- Pintar todos los objetos en el canvas
 function draw() {
 
+  //-- Dibujar el texto de comenzar
+  if (estado == ESTADO.INIT) {
+    ctx.font = "40px Arial";
+    ctx.fillStyle = "green";
+    ctx.fillText("Pulsa Start!", 30, 350);
+  }
   //----- Dibujar la Bola
-  bola.draw();
+  //-- Solo en el estado de jugando
+  if (estado == ESTADO.JUGANDO) {
+    bola.draw();
+  }
 
   //-- Dibujar las raquetas
   raqI.draw();
@@ -45,6 +66,20 @@ function draw() {
   ctx.fillStyle = "white";
   ctx.fillText(pointP1, 200, 80);
   ctx.fillText(pointP2, 340, 80);
+
+    //-- Dibujar el texto de sacar
+  if (estado == ESTADO.SAQUE) {
+    ctx.font = "40px Arial";
+    ctx.fillStyle = "yellow";
+    ctx.fillText("Saca!", 30, 350);
+  }
+
+  //-- Dibujar el texto de comenzar
+  if (estado == ESTADO.INIT) {
+    ctx.font = "40px Arial";
+    ctx.fillStyle = "green";
+    ctx.fillText("Pulsa Start!", 30, 350);
+  }
 }
 
 //---- Bucle principal de la animación
@@ -62,6 +97,7 @@ function animacion()
   // que "rebote" y vaya en el sentido opuesto
   if (bola.x >= canvas.width) {
     //-- Hay colisión. Cambiar el signo de la bola
+    estado = ESTADO.SAQUE;
     bola.x_ini = raqD.x-5;
     bola.y_ini = raqD.y+15;
     bola.init();
@@ -72,6 +108,7 @@ function animacion()
     sonido_tanto.play();
   }else if (bola.x <= 0){
     //-- Hay colisión. Cambiar el signo de la bola
+    estado = ESTADO.SAQUE;
     bola.x_ini = raqI.x+11;
     bola.y_ini = raqI.y+15;
     bola.vx = 0;
@@ -111,6 +148,9 @@ function animacion()
 
   //-- Dibujar el nuevo frame
   draw();
+
+  //-- Arrancar la animación
+  window.requestAnimationFrame(animacion);
 }
 
 //-- Inicializa la bola: Llevarla a su posicion inicial
@@ -125,13 +165,15 @@ raqD.x_ini = 540;
 raqD.y_ini = 300;
 raqD.init();
 
-//-- Arrancar la animación
-setInterval(()=>{
-  animacion();
-},16);
+
 
 //-- Retrollamada de las teclas
 window.onkeydown = (e) => {
+  //-- En el estado inicial no se
+//-- hace caso de las teclas
+if (estado == ESTADO.INIT){
+    return;
+}
 
   switch (e.key) {
     case "a":
@@ -162,13 +204,26 @@ window.onkeydown = (e) => {
       raqD.v = raqD.v_ini;
     }
       break;
-    case " ":
-      //-- Llevar bola a su posicion incicial
-      bola.init();
+    case "s":
 
-      //-- Darle velocidad
-      bola.vx = (Math.random() * (5 - 3) + 3);
-      bola.vy = (Math.random() * (5 - 3) + 3);
+    //-- El saque solo funciona en el estado de SAQUE
+      if (estado == ESTADO.SAQUE) {
+        //-- Reproducir sonido
+        sonido_raqueta.currentTime = 0;
+        sonido_raqueta.play();
+
+        //-- Llevar bola a su posicion incicial
+        bola.init();
+
+        //-- Darle velocidad
+        bola.vx = (Math.random() * (5 - 3) + 3);
+        bola.vy = (Math.random() * (5 - 3) + 3);
+
+        //-- Cambiar al estado de jugando!
+        estado = ESTADO.JUGANDO;
+
+        return false;
+      }
     default:
   }
 }
@@ -184,3 +239,23 @@ window.onkeyup = (e) => {
     raqD.v = 0;
   }
 }
+
+//-- Botón de arranque
+const start = document.getElementById("Start");
+
+start.onclick = () => {
+  estado = ESTADO.SAQUE;
+  console.log("SAQUE!");
+  canvas.focus();
+}
+
+//-- Boton de stop
+const stop = document.getElementById("Stop");
+
+stop.onclick = () => {
+  //-- Volver al estado inicial
+  estado = ESTADO.INIT;
+  bola.init();
+  start.disabled = false;
+}
+animacion();
