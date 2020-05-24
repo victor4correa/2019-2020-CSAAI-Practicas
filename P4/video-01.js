@@ -36,6 +36,10 @@ video3.src="https://gsyc.urjc.es/jmplaza/csaai/realizador-fuente3.mp4"
 //-- Función de retrollamada del botón de ver
 play1.onclick = () => {
   console.log("Click!");
+  document.getElementById("video1").classList.add("borderColor");
+  document.getElementById("video2").classList.remove("borderColor");
+  document.getElementById("video3").classList.remove("borderColor");
+
   video1.src="https://gsyc.urjc.es/jmplaza/csaai/realizador-fuente1.mp4"
   video1.play();
   mainvideo.src="https://gsyc.urjc.es/jmplaza/csaai/realizador-fuente1.mp4"
@@ -52,6 +56,10 @@ stop1.onclick = () => {
 //-- Función de retrollamada del botón de ver
 play2.onclick = () => {
   console.log("Click!");
+  document.getElementById("video2").classList.add("borderColor");
+  document.getElementById("video1").classList.remove("borderColor");
+  document.getElementById("video3").classList.remove("borderColor");
+
   video2.src="https://gsyc.urjc.es/jmplaza/csaai/realizador-fuente2.mp4"
   video2.play();
   mainvideo.src="https://gsyc.urjc.es/jmplaza/csaai/realizador-fuente2.mp4"
@@ -68,6 +76,10 @@ stop2.onclick = () => {
 //-- Función de retrollamada del botón de ver
 play3.onclick = () => {
   console.log("Click!");
+  document.getElementById("video3").classList.add("borderColor");
+  document.getElementById("video2").classList.remove("borderColor");
+  document.getElementById("video1").classList.remove("borderColor");
+  
   video3.src="https://gsyc.urjc.es/jmplaza/csaai/realizador-fuente3.mp4"
   video3.play();
   mainvideo.src="https://gsyc.urjc.es/jmplaza/csaai/realizador-fuente3.mp4"
