@@ -7,11 +7,11 @@ const video3 = document.getElementById("video3")
 const mainvideo = document.getElementById("mainvideo")
 
 video1.width=300;  //-- Tamaño de la pantalla de video
-video1.height=300;
+video1.height=200;
 video2.width=300;
-video2.height=300;
+video2.height=200;
 video3.width=300;
-video3.height=300;
+video3.height=200;
 mainvideo.height=500;
 mainvideo.width=600;
 
@@ -36,6 +36,8 @@ video3.src="https://gsyc.urjc.es/jmplaza/csaai/realizador-fuente3.mp4"
 //-- Función de retrollamada del botón de ver
 play1.onclick = () => {
   console.log("Click!");
+  video1.src="https://gsyc.urjc.es/jmplaza/csaai/realizador-fuente1.mp4"
+  video1.play();
   mainvideo.src="https://gsyc.urjc.es/jmplaza/csaai/realizador-fuente1.mp4"
   mainvideo.play();
 };
@@ -50,6 +52,8 @@ stop1.onclick = () => {
 //-- Función de retrollamada del botón de ver
 play2.onclick = () => {
   console.log("Click!");
+  video2.src="https://gsyc.urjc.es/jmplaza/csaai/realizador-fuente2.mp4"
+  video2.play();
   mainvideo.src="https://gsyc.urjc.es/jmplaza/csaai/realizador-fuente2.mp4"
   mainvideo.play();
 };
@@ -64,6 +68,8 @@ stop2.onclick = () => {
 //-- Función de retrollamada del botón de ver
 play3.onclick = () => {
   console.log("Click!");
+  video3.src="https://gsyc.urjc.es/jmplaza/csaai/realizador-fuente3.mp4"
+  video3.play();
   mainvideo.src="https://gsyc.urjc.es/jmplaza/csaai/realizador-fuente3.mp4"
   mainvideo.play();
 };

@@ -1,0 +1,21 @@
+div{
+  display: inline-block;
+  border: solid;
+  margin: 5px;
+  border-color:inherit;
+}
+p{
+  text-align: center;
+  align-content: center;
+  margin: auto;
+
+}
+button{
+  align-items: center;
+}
+video{
+  align-items: center;
+}
+video.mainvideo{
+  ali
+}
