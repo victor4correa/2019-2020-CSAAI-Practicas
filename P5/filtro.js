@@ -15,6 +15,10 @@ const valorR = document.getElementById('valorR');
 const valorG = document.getElementById('valorG');
 const valorB = document.getElementById('valorB');
 
+const color = document.getElementById("color");
+const grises = document.getElementById("grises");
+const ruido = document.getElementById("ruido");
+
 //-- Función de retrollamada de imagen cargada
 //-- La imagen no se carga instantaneamente, sino que
 //-- lleva un tiempo. Sólo podemos acceder a ella una vez
@@ -33,14 +37,13 @@ img.onload = function () {
   console.log("Imagen lista...");
 };
 
-//-- Situar la imagen original en el canvas
-//-- No se han hecho manipulaciones todavia
-ctx.drawImage(img, 0,0);
-
-//-- Funcion de retrollamada del deslizadorR
-deslizadorR.oninput = () => {
+function rgb(){
   //-- Mostrar el nuevo valor del deslizador
   valorR.innerHTML = deslizadorR.value;
+  valorG.innerHTML = deslizadorG.value;
+  valorB.innerHTML = deslizadorB.value;
+
+  ctx.drawImage(img, 0,0);
 
   //-- Obtener la imagen del canvas en pixeles
   let imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
@@ -49,66 +52,91 @@ deslizadorR.oninput = () => {
   let data = imgData.data
 
   //-- Obtener el umbral de rojo del desliador
-  umbralR = deslizadorR.value
+  umbral_R = deslizadorR.value;
+  umbral_G = deslizadorG.value;
+  umbral_B = deslizadorB.value;
 
   //-- Filtrar la imagen según el nuevo umbral
   for (let i = 0; i < data.length; i+=4) {
-    if (data[i] > umbralR)
-      data[i] = umbralR;
+    if (data[i] > umbral_R)
+      data[i] = umbral_R;
+    if (data[i+1] > umbral_G)
+      data[i+1] = umbral_G;
+    if (data[i+2] > umbral_B)
+      data[i+2] = umbral_B;
   }
-
   //-- Poner la imagen modificada en el canvas
   ctx.putImageData(imgData, 0, 0);
 }
 
-//-- Funcion de retrollamada del deslizadorG
-deslizadorG.oninput = () => {
-  //-- Mostrar el nuevo valor del deslizador
-  valorG.innerHTML = deslizadorG.value;
-
+function gray(){
+  //-- Situar la imagen original en el canvas
+  //-- No se han hecho manipulaciones todavia
+  ctx.drawImage(img, 0,0);
 
   //-- Obtener la imagen del canvas en pixeles
   let imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
 
   //-- Obtener el array con todos los píxeles
-  let data = imgData.data
-
-  //-- Obtener el umbral de rojo del desliador
-  umbralG = deslizadorG.value
+  let data = imgData.data;
 
   //-- Filtrar la imagen según el nuevo umbral
-  for (let i = 1; i < data.length; i+=4) {
-    if (data[i] > umbralG)
-      data[i] = umbralG;
-  }
+  for (var i = 0; i < data.length; i+=4){
+      R = data[i];
+      G = data[i+1];
+      B = data[i+2];
 
-  //-- Poner la imagen modificada en el canvas
+  let brillo = (3 * R + 4 * G + B)/8
+      data[i] = brillo;
+      data[i+1] = brillo;
+      data[i+2] = brillo;
+  }
   ctx.putImageData(imgData, 0, 0);
 }
 
-//-- Funcion de retrollamada del deslizadorB
-deslizadorB.oninput = () => {
-  //-- Mostrar el nuevo valor del deslizador
-  valorB.innerHTML = deslizadorB.value;
-
-
+function noise(){
+  //-- Situar la imagen original en el canvas
+  //-- No se han hecho manipulaciones todavia
+  ctx.drawImage(img, 0,0);
   //-- Obtener la imagen del canvas en pixeles
   let imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
 
   //-- Obtener el array con todos los píxeles
-  let data = imgData.data
-
-  //-- Obtener el umbral de rojo del desliador
-  umbralB = deslizadorB.value
+  let data = imgData.data;
 
   //-- Filtrar la imagen según el nuevo umbral
-  for (let i = 2; i < data.length; i+=4) {
-    if (data[i] > umbralB)
-      data[i] = umbralB;
+  for (var i = 0; i < data.length; i+=4){
+      data[i] = data[i] + (Math.random() * (50 - (-30) + (-30)));
+      data[i+1] = data[i+1] + (Math.random() * (50 - (-30) + (-30)));
+      data[i+2] = data[i+2] + (Math.random() * (50 - (-30) + (-30)));
+
+  ctx.putImageData(imgData, 0, 0);
+  }
+}
+
+color.onclick = () => {
+  //-- Funcion de retrollamada del deslizadorR
+  deslizadorR.oninput = () => {
+    rgb();
   }
 
-  //-- Poner la imagen modificada en el canvas
-  ctx.putImageData(imgData, 0, 0);
+  //-- Funcion de retrollamada del deslizadorG
+  deslizadorG.oninput = () => {
+    rgb();
+  }
+
+  //-- Funcion de retrollamada del deslizadorB
+  deslizadorB.oninput = () => {
+    rgb();
+  }
+}
+
+grises.onclick = () => {
+  gray();
+}
+
+ruido.onclick = () => {
+  noise();
 }
 
 console.log("Fin...");
